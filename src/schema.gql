@@ -1,0 +1,370 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Address {
+  id: Int!
+  government: String!
+  city: String!
+  street: String!
+  country: String!
+  zipCode: Int!
+  userId: Int
+}
+
+type Order {
+  id: Int!
+  totalPrice: Int!
+  discount: Int!
+  orderStatus: String!
+  paymentStatus: String!
+  userId: Int!
+  addressId: Int!
+}
+
+type Company {
+  id: Int!
+  name: String!
+  website: String!
+  phone: String!
+  email: String!
+  addressId: Int!
+  products: [Product!]!
+  userId: Int
+}
+
+type Images {
+  id: Int!
+  path: String!
+  productId: Int!
+}
+
+type Product {
+  id: Int!
+  name: String!
+  description: String!
+  price: Int!
+  discount: Int!
+  category: String!
+  companyId: Int!
+  userId: Int!
+  images: [Images!]!
+  colors: [Color!]!
+  cartItem: [CartItem!]!
+  orderItem: [OrderItem!]!
+}
+
+type OrderItem {
+  id: Int!
+  productId: Int!
+  color: String!
+  quantity: Int!
+  totalPrice: Int!
+  orderId: Int!
+}
+
+type Color {
+  id: Int!
+  name: String!
+  quantity: Int!
+  productId: Int!
+}
+
+type CartItem {
+  id: Int!
+  productId: Int!
+  color: String!
+  quantity: Int!
+  totalPrice: Int!
+  cartId: Int!
+}
+
+type Cart {
+  id: Int!
+  totalPrice: Int
+  userId: Int!
+}
+
+type User {
+  id: Int!
+  firstName: String!
+  lastName: String!
+  fullName: String!
+  avatar: String!
+  phone: String!
+  email: String!
+  password: String!
+  addressId: Int
+  companyId: Int
+}
+
+type AuthResponse {
+  user: User!
+  token: String!
+}
+
+type ColorResponse {
+  name: String!
+  quantity: Int!
+}
+
+type ProductResponse {
+  id: Float!
+  name: String!
+  description: String!
+  category: String!
+  price: Int!
+  images: [String!]!
+  colors: [ColorResponse!]
+  company: String!
+}
+
+type CartItemResponse {
+  id: Float!
+  color: String!
+  quantity: Float!
+  product: ProductResponse!
+}
+
+type CartResponse {
+  id: Int!
+  totalPrice: Int!
+  userId: Int!
+  cartItems: [CartItemResponse!]!
+}
+
+type Coupon {
+  id: Int!
+  name: String!
+  discount: Int!
+  type: String!
+  expiryDate: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  sayHello: String!
+  getUserById(id: Float!): User!
+  getUserByEmail(checkEmail: CheckEmail!): User!
+  deleteUser: String!
+  getAddressById(id: Float!): Address
+  deleteAddress(id: Float!): String!
+  getProductById(id: Float!): ProductResponse
+  deleteProduct(id: Float!): String!
+  getCompanyById(id: Float!): Company
+  getCompanyByName(name: String!): Company
+  getAllCompanys: [Company!]
+  deleteCompany(id: Float!): String!
+  getColorById(id: Float!): Color
+  getColorByName(name: String!): Color
+  deleteColor(id: Float!): String!
+  findAllOrders(orderFilterDto: OrderFilterDto, orderSortDto: OrderSortDto, paginationDto: PaginationDto): [Order!]!
+  findOrder(userId: Int!): Order!
+  getCouponById(id: Float!): Coupon
+  getCouponByName(name: String!): Coupon
+  deleteCoupon(id: Float!): String!
+}
+
+input CheckEmail {
+  email: String!
+}
+
+input OrderFilterDto {
+  paymentStatus: String
+  orderStatus: String
+  minPrice: Float
+  maxPrice: Float
+}
+
+input OrderSortDto {
+  orderId: String
+  totalPrice: String
+}
+
+input PaginationDto {
+  limit: Int
+  offset: Int
+}
+
+type Mutation {
+  updateUser(updateUserDto: UpdateUserDto!): User!
+  UpdateUserRole(checkEmail: CheckEmail!, companyId: Float!): String!
+  register(createUserDto: CreateUserDto!, createAddressDto: CreateAddressDto!, avatar: CreateImagDto!): AuthResponse!
+  login(loginDto: LoginDto!): AuthResponse!
+  forgotPassword(checkEmail: CheckEmail!): String!
+  resetPassword(resetPasswordDto: ResetPasswordDto!): String!
+  changePassword(changePasswordDto: ChangePasswordDto!): String!
+  adminLogin(loginDto: LoginDto!): AuthResponse!
+  managerLogin(loginDto: LoginDto!): AuthResponse!
+  companyLogin(loginDto: LoginDto!): AuthResponse!
+  logout: Boolean!
+  createAddress(createAddressDto: CreateAddressDto!): Address!
+  updateAddress(id: Float!, updateAddressDto: UpdateAddressDto!): Address!
+  createProduct(createProductDto: CreateProductDto!, imgs: [CreateImagDto!]!): ProductResponse!
+  getAllProducts(productFilterDto: ProductFilterDto, productSortDto: ProductSortDto, paginationDto: PaginationDto): [ProductResponse!]
+  updateProduct(id: Int!, updateProductDto: UpdateProductDto, imgs: [CreateImagDto!], createColorDto: [CreateColorDto!]): ProductResponse!
+  createCompany(createCompanyDto: CreateCompanyDto!, createAddressDto: CreateAddressDto!): Company!
+  updateCompany(id: Float!, updateCompanyDto: UpdateCompanyDto!): Company!
+  createColor(createColorDto: CreateColorDto!): Color!
+  updateColor(cartItemDto: CartItemDto!): String!
+  findCart: [Cart!]!
+  addToCart(cartItemDto: CartItemDto!): CartResponse!
+  emptyCart: String!
+  deleteProductFromCart(productId: Float!): String!
+  updateQuantity(cartItemDto: CartItemDto!): String!
+  checkTotalCart: Int!
+  createOrder(createOrderDto: CreateOrderDto!, updateAddressDto: UpdateAddressDto): String!
+  updateStatus(userId: Int!, status: String!): Order!
+  deleteOrder(userId: Int!): String!
+  deleteOrderItem(id: Int!): String!
+  createCoupon(createCouponDto: CreateCouponDto!): Coupon!
+  updateCoupon(id: Float!, updateCouponDto: UpdateCouponDto!): Coupon!
+}
+
+input UpdateUserDto {
+  firstName: String
+  lastName: String
+  avatar: CreateImagDto
+  email: String
+  phone: String
+  addressId: Float
+}
+
+input CreateImagDto {
+  name: String!
+  breed: String!
+  image: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreateUserDto {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  phone: String!
+}
+
+input CreateAddressDto {
+  city: String!
+  street: String!
+  government: String!
+  country: String!
+  zipCode: Float!
+}
+
+input LoginDto {
+  email: String!
+  password: String!
+}
+
+input ResetPasswordDto {
+  token: String!
+  password: String!
+}
+
+input ChangePasswordDto {
+  password: String!
+  newPassword: String!
+}
+
+input UpdateAddressDto {
+  city: String!
+  street: String!
+  government: String!
+  country: String!
+  zipCode: Float!
+}
+
+input CreateProductDto {
+  name: String!
+  category: String!
+  description: String!
+  price: Float!
+  discount: Float!
+  colors: [CreatePColorDto!]!
+}
+
+input CreatePColorDto {
+  name: String!
+  quantity: Int!
+}
+
+input ProductFilterDto {
+  name: String
+  category: String
+  company: String
+  minPrice: Float
+  maxPrice: Float
+}
+
+input ProductSortDto {
+  price: String
+  name: String
+}
+
+input UpdateProductDto {
+  name: String!
+  category: String!
+  description: String!
+  price: Float!
+  discount: Float!
+}
+
+input CreateColorDto {
+  productId: Float!
+  name: String!
+  quantity: Float!
+}
+
+input CreateCompanyDto {
+  name: String!
+  email: String!
+  phone: String!
+  website: String!
+}
+
+input UpdateCompanyDto {
+  name: String!
+  addressId: String!
+  email: String!
+  phone: String!
+  website: String!
+}
+
+input CartItemDto {
+  productId: Float!
+  color: String!
+  quantity: Float!
+}
+
+input CreateOrderDto {
+  item: [CreateOrderItemDto!]!
+  coupon: String
+}
+
+input CreateOrderItemDto {
+  productId: Float!
+  quantity: Float!
+  color: String!
+}
+
+input CreateCouponDto {
+  expiryDate: DateTime!
+  name: String!
+  type: String!
+  discount: Float!
+}
+
+input UpdateCouponDto {
+  expiryDate: String!
+  name: String!
+  type: String!
+  discount: Float!
+}
