@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
-import { ColorNotFound } from 'src/constant/messages.constant'
+import { ColorNotFound } from 'src/common/constant/messages.constant'
 import { Color } from './entity/color.entity'
 import {
   BadRequestException,
@@ -42,7 +42,7 @@ export class ColorService {
 
   async findByProductId (productId: number) {
     const color = await this.colorRepository.find({ where: { productId } })
-    if (color.length===0) {
+    if (color.length === 0) {
       throw new NotFoundException(`Color with ${productId} not found`)
     }
     return color

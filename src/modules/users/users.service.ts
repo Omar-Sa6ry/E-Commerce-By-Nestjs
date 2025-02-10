@@ -2,29 +2,28 @@ import { Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { User } from './entity/user.entity'
 import { UpdateUserDto } from './dtos/updateUser.dto'
-import {  unlinkSync } from 'fs'
-import { EmailIsWrong, EmailUsed } from 'src/constant/messages.constant'
-import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Cache } from 'cache-manager'
-import { Role } from 'src/constant/enum.constant'
+import { unlinkSync } from 'fs'
+import { EmailIsWrong, EmailUsed } from 'src/common/constant/messages.constant'
+import { Role } from 'src/common/constant/enum.constant'
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common'
 import * as fs from 'fs'
-import { UploadService } from '../upload/upload.service'
+import { UploadService } from 'src/common/upload/upload.service'
+import { RedisService } from 'src/common/redis/redis.service'
 
 @Injectable()
 export class UserService {
   constructor (
     private uploadService: UploadService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly redisService: RedisService,
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {}
+  ) {
+    console.log(this.userRepository)
+  }
 
   async findById (id: number) {
     const user = await this.userRepository.findOne({ where: { id } })
@@ -33,7 +32,7 @@ export class UserService {
     }
 
     const userCacheKey = `user:${user.id}`
-    await this.cacheManager.set(userCacheKey, user, 3600)
+    await this.redisService.set(userCacheKey, user, 3600)
 
     return user
   }
@@ -44,7 +43,7 @@ export class UserService {
       return new NotFoundException(`User with ${email} not found`)
     }
     const userCacheKey = `user:${user.email}`
-    await this.cacheManager.set(userCacheKey, user, 3600)
+    await this.redisService.set(userCacheKey, user, 3600)
 
     return user
   }
@@ -84,7 +83,7 @@ export class UserService {
       }
 
       const userCacheKey = `user:${user.email}`
-      await this.cacheManager.set(userCacheKey, user)
+      await this.redisService.set(userCacheKey, user)
 
       await this.userRepository.save(user)
       await query.commitTransaction()

@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
-import { TypeCoupon } from 'src/constant/enum.constant'
+import { TypeCoupon } from 'src/common/constant/enum.constant'
 import {
   AfterInsert,
   AfterRemove,

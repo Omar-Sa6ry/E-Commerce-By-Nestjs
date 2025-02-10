@@ -7,20 +7,19 @@ import { ProductFilterDto } from './dtos/filter.dto'
 import { CompanyService } from '../company/company.service'
 import { ColorService } from '../color/color.service'
 import { ProductSortDto } from './dtos/sortdto'
-import { PaginationDto } from '../../dtos/pagination.dto'
+import { PaginationDto } from '../../common/dtos/pagination.dto'
 import { Images } from './entity/images.entity'
 import { ProductResponse } from './dtos/productResoponse.dto'
 import { Color } from '../color/entity/color.entity'
 import { Company } from '../company/entity/company.entity'
 import {
-  ColorNotFound,
   CompanysNotFound,
   MaxImage,
   MinImage,
   ProductNotFound,
   ProductNotMatchCompany,
   UpdateProduct,
-} from 'src/constant/messages.constant'
+} from 'src/common/constant/messages.constant'
 import {
   BadRequestException,
   Inject,
@@ -29,11 +28,10 @@ import {
 } from '@nestjs/common'
 import { existsSync, unlinkSync } from 'fs'
 import { join } from 'path'
-import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Cache } from 'cache-manager'
 import { CreateColorDto } from '../color/dto/createColor.dto'
-import { CreateImagDto } from '../upload/dtos/createImage.dto'
-import { UploadService } from '../upload/upload.service'
+import { UploadService } from 'src/common/upload/upload.service'
+import { CreateImagDto } from 'src/common/upload/dtos/createImage.dto'
+import { RedisService } from 'src/common/redis/redis.service'
 
 @Injectable()
 export class ProductService {
@@ -41,7 +39,7 @@ export class ProductService {
     private companyService: CompanyService,
     private colorService: ColorService,
     private uploadService: UploadService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly redisService: RedisService,
     @InjectRepository(Product) private productRepository: Repository<Product>,
     @InjectRepository(Color) private colorRepository: Repository<Color>,
     @InjectRepository(Images) private imageRepository: Repository<Images>,
@@ -97,7 +95,7 @@ export class ProductService {
       const result = { ...product, images, colors, company: company.name }
 
       const productCacheKey = `product:${product.id}`
-      await this.cacheManager.set(productCacheKey, result, 3600)
+      await this.redisService.set(productCacheKey, result, 3600)
 
       return result
     } catch (error) {
@@ -137,7 +135,7 @@ export class ProductService {
 
     const result = { ...product, colors, images, company: companyName.name }
     const productCacheKey = `product:${product.id}`
-    await this.cacheManager.set(productCacheKey, result, 3600)
+    await this.redisService.set(productCacheKey, result, 3600)
     return result
   }
 
@@ -333,7 +331,7 @@ export class ProductService {
       const result = { ...product, colors, images, company: company.name }
 
       const productCacheKey = `product:${product.id}`
-      await this.cacheManager.set(productCacheKey, result, 3600)
+      await this.redisService.set(productCacheKey, result, 3600)
       return result
     } catch (error) {
       await query.rollbackTransaction()

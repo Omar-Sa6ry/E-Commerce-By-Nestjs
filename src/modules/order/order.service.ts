@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common'
 import Stripe from 'stripe'
-import { PaginationDto } from '../../dtos/pagination.dto'
+import { PaginationDto } from '../../common/dtos/pagination.dto'
 import { OrderSortDto } from './dtos/sortdto'
 import { MoreThan, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -14,7 +14,7 @@ import { ProductService } from '../product/produt.service'
 import { CouponService } from '../coupon/coupon.service'
 import { CreateOrderDto } from './dtos/createOrder.dto'
 import { AddressService } from '../address/address.service'
-import { TypeCoupon } from 'src/constant/enum.constant'
+import { TypeCoupon } from 'src/common/constant/enum.constant'
 import { OrderFilterDto } from './dtos/filter.dto'
 import { UpdateAddressDto } from '../address/dtos/updateAddress.dto'
 import { Address } from '../address/entity/address.entity'
@@ -30,7 +30,7 @@ import {
   OrderItemNotFound,
   OrderNotFound,
   OrdersNotFound,
-} from 'src/constant/messages.constant'
+} from 'src/common/constant/messages.constant'
 
 @Injectable()
 export class OrderService {

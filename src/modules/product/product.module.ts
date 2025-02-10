@@ -8,12 +8,14 @@ import { ColorModule } from '../color/color.module'
 import { Color } from '../color/entity/color.entity'
 import { UserModule } from '../users/users.module'
 import { Images } from './entity/images.entity'
-import { UploadModule } from '../upload/upload.module'
+import { UploadModule } from 'src/common/upload/upload.module'
+import { RedisModule } from 'src/common/redis/redis.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Product, Images, Color]),
     CompanyModule,
+    RedisModule,
     UploadModule,
     UserModule,
     ColorModule,

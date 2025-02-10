@@ -6,7 +6,7 @@ import { UpdateAddressDto } from './dtos/updateAddress.dto'
 import {
   AddressNotFound,
   NotMatchAddress,
-} from 'src/constant/messages.constant'
+} from 'src/common/constant/messages.constant'
 import {
   BadRequestException,
   Injectable,

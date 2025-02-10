@@ -1,29 +1,29 @@
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql'
 import { Inject, UseGuards, UseInterceptors } from '@nestjs/common'
-import { AuthGuard } from 'src/guard/auth.guard'
-import { CurrentUserDto } from 'src/dtos/currentUser.dto'
-import { CurrentUser } from 'src/decerator/currentUser.decerator'
+import { AuthGuard } from 'src/common/guard/auth.guard'
+import { CurrentUserDto } from 'src/common/dtos/currentUser.dto'
+import { CurrentUser } from 'src/common/decerator/currentUser.decerator'
 import { AuthService } from './auth.service'
 import { User } from '../users/entity/user.entity'
 import { AuthResponse } from './dtos/AuthRes.dto'
 import { CreateUserDto } from './dtos/createUserData.dto'
 import { LoginDto } from './dtos/login.dto'
 import { ResetPasswordDto } from './dtos/resetPassword.dto'
-import { CheckEmail } from 'src/dtos/checkEmail.dto '
+import { CheckEmail } from 'src/common/dtos/checkEmail.dto '
 import { ChangePasswordDto } from './dtos/changePassword.dto'
-import { NoToken } from 'src/constant/messages.constant'
-import { Roles } from 'src/decerator/roles'
+import { NoToken } from 'src/common/constant/messages.constant'
+import { Roles } from 'src/common/decerator/roles'
 import { CreateAddressDto } from '../address/dtos/createAddress.dto'
-import { Role } from 'src/constant/enum.constant'
-import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Cache } from 'cache-manager'
-import { CreateImagDto } from '../upload/dtos/createImage.dto'
+import { Role } from 'src/common/constant/enum.constant'
+import { CreateImagDto } from 'src/common/upload/dtos/createImage.dto'
+import { RedisService } from 'src/common/redis/redis.service'
 
 @Resolver(of => User)
 export class AuthResolver {
   constructor (
     private authService: AuthService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+        private readonly redisService: RedisService
+,
   ) {}
 
   @Mutation(returns => AuthResponse)
@@ -33,7 +33,7 @@ export class AuthResolver {
     @Args('avatar') avatar: CreateImagDto,
   ) {
     const userCacheKey = `user:${createUserDto.email}`
-    const cachedUser = await this.cacheManager.get(userCacheKey)
+    const cachedUser = await this.redisService.get(userCacheKey)
 
     if (cachedUser) {
       return { result: cachedUser }
@@ -49,7 +49,7 @@ export class AuthResolver {
   @Mutation(returns => AuthResponse)
   async login (@Args('loginDto') loginDto: LoginDto) {
     const userCacheKey = `user:${loginDto.email}`
-    const cachedUser = await this.cacheManager.get(userCacheKey)
+    const cachedUser = await this.redisService.get(userCacheKey)
 
     if (cachedUser) {
       return { result: cachedUser }
@@ -82,7 +82,7 @@ export class AuthResolver {
   @Mutation(returns => AuthResponse)
   async adminLogin (@Args('loginDto') loginDto: LoginDto) {
     const userCacheKey = `user:${loginDto.email}`
-    const cachedUser = await this.cacheManager.get(userCacheKey)
+    const cachedUser = await this.redisService.get(userCacheKey)
 
     if (cachedUser) {
       return { result: cachedUser }
@@ -94,7 +94,7 @@ export class AuthResolver {
   @Mutation(returns => AuthResponse)
   async managerLogin (@Args('loginDto') loginDto: LoginDto) {
     const userCacheKey = `user:${loginDto.email}`
-    const cachedUser = await this.cacheManager.get(userCacheKey)
+    const cachedUser = await this.redisService.get(userCacheKey)
 
     if (cachedUser) {
       return { result: cachedUser }
@@ -106,7 +106,7 @@ export class AuthResolver {
   @Mutation(returns => AuthResponse)
   async companyLogin (@Args('loginDto') loginDto: LoginDto) {
     const userCacheKey = `user:${loginDto.email}`
-    const cachedUser = await this.cacheManager.get(userCacheKey)
+    const cachedUser = await this.redisService.get(userCacheKey)
 
     if (cachedUser) {
       return { result: cachedUser }

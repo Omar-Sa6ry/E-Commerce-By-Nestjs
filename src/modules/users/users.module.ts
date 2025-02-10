@@ -3,10 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { User } from './entity/user.entity'
 import { UserService } from './users.service'
 import { UserResolver } from './users.resolver'
-import { UploadModule } from '../upload/upload.module'
+import { RedisModule } from 'src/common/redis/redis.module'
+import { UploadModule } from 'src/common/upload/upload.module'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), UploadModule],
+  imports: [TypeOrmModule.forFeature([User]), RedisModule, UploadModule],
   providers: [UserService, UserResolver],
   exports: [UserService],
 })

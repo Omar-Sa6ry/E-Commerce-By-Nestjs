@@ -9,11 +9,13 @@ import { User } from '../users/entity/user.entity'
 import { AddressModule } from '../address/address.module'
 import { QueueModule } from 'src/queue/queue.module'
 import { SendEmailService } from 'src/queue/services/sendemail.service'
-import { UploadModule } from '../upload/upload.module'
+import { UploadModule } from 'src/common/upload/upload.module'
+import { RedisModule } from 'src/common/redis/redis.module'
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
+    RedisModule,
     UserModule,
     AddressModule,
     UploadModule,

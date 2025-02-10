@@ -1,9 +1,9 @@
 import { UserService } from 'src/modules/users/users.service'
 import { User } from 'src/modules/users/entity/user.entity'
 import { GqlExecutionContext } from '@nestjs/graphql'
-import { NoToken } from 'src/constant/messages.constant'
+import { NoToken } from 'src/common/constant/messages.constant'
 import { Reflector } from '@nestjs/core'
-import { Role } from 'src/constant/enum.constant'
+import { Role } from 'src/common/constant/enum.constant'
 import { JwtService } from '@nestjs/jwt'
 import { Request } from 'express'
 import {

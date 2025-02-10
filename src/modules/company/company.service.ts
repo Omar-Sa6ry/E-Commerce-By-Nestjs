@@ -14,7 +14,7 @@ import {
   CompanyNotFound,
   CompanysNotFound,
   EndOfEmail,
-} from 'src/constant/messages.constant'
+} from 'src/common/constant/messages.constant'
 import { AddressService } from '../address/address.service'
 
 @Injectable()

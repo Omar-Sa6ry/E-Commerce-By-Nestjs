@@ -1,15 +1,15 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { ParseIntPipe, UseGuards } from '@nestjs/common'
-import { RoleGuard } from 'src/guard/role.guard'
-import { Roles } from 'src/decerator/roles'
-import { CurrentUser } from 'src/decerator/currentUser.decerator'
-import { CurrentUserDto } from 'src/dtos/currentUser.dto'
+import { RoleGuard } from 'src/common/guard/role.guard'
+import { Roles } from 'src/common/decerator/roles'
+import { CurrentUser } from 'src/common/decerator/currentUser.decerator'
+import { CurrentUserDto } from 'src/common/dtos/currentUser.dto'
 import { Address } from './entity/address.entity'
 import { AddressService } from './address.service'
 import { CreateAddressDto } from './dtos/createAddress.dto'
 import { UpdateAddressDto } from './dtos/updateAddress.dto'
-import { AuthGuard } from 'src/guard/auth.guard'
-import { Role } from 'src/constant/enum.constant'
+import { AuthGuard } from 'src/common/guard/auth.guard'
+import { Role } from 'src/common/constant/enum.constant'
 
 @Resolver(of => Address)
 export class AddressResolver {

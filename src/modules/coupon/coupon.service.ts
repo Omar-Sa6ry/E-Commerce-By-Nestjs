@@ -3,7 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { CreateCouponDto } from './dtos/createCoupon.dto'
 import { UpdateCouponDto } from './dtos/updateCoupon.dto'
 import { Coupon } from './entity/coupon.entity'
-import { CouponIsExisted, CouponNotFound } from 'src/constant/messages.constant'
+import {
+  CouponIsExisted,
+  CouponNotFound,
+} from 'src/common/constant/messages.constant'
 import {
   BadRequestException,
   Injectable,
@@ -20,7 +23,7 @@ export class CouponService {
     const existedCoupon = await this.couponRepository.findOne({
       where: { name: createCouponDto.name },
     })
-    
+
     if (existedCoupon) {
       throw new BadRequestException(CouponIsExisted)
     }

@@ -1,7 +1,7 @@
 import { GqlExecutionContext } from '@nestjs/graphql'
 import { JwtService } from '@nestjs/jwt'
 import { Request } from 'express'
-import { NoToken } from 'src/constant/messages.constant'
+import { NoToken } from 'src/common/constant/messages.constant'
 import {
   CanActivate,
   ExecutionContext,

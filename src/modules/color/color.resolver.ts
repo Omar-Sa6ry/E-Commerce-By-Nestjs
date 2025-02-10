@@ -1,11 +1,11 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { ParseIntPipe, UseGuards } from '@nestjs/common'
-import { RoleGuard } from 'src/guard/role.guard'
-import { Roles } from 'src/decerator/roles'
-import { AuthGuard } from 'src/guard/auth.guard'
+import { RoleGuard } from 'src/common/guard/role.guard'
+import { Roles } from 'src/common/decerator/roles'
+import { AuthGuard } from 'src/common/guard/auth.guard'
 import { Color } from './entity/color.entity'
 import { ColorService } from './color.service'
-import { Role } from 'src/constant/enum.constant'
+import { Role } from 'src/common/constant/enum.constant'
 import { CreateColorDto } from './dto/createColor.dto'
 
 @Resolver(of => Color)

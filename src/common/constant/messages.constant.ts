@@ -1,6 +1,7 @@
 // Authentication
 export const NoToken = 'No token found'
 export const EmailUsed = 'Email in used'
+export const UserNotFound = 'User Not Found'
 export const IsnotAdmin = 'This account isnot admin'
 export const IsnotCompany = 'This account isnot company'
 export const IsnotManager = 'This account isnot manager'

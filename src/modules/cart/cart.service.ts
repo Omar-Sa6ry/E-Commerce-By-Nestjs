@@ -24,7 +24,7 @@ import {
   ProductColorQuantity,
   ProductNotFound,
   QuantityMsg,
-} from 'src/constant/messages.constant'
+} from 'src/common/constant/messages.constant'
 import { Images } from '../product/entity/images.entity'
 
 @Injectable()

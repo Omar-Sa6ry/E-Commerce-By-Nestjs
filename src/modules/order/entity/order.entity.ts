@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
-import { OrderStatus, PaymentStatus } from 'src/constant/enum.constant'
+import { OrderStatus, PaymentStatus } from 'src/common/constant/enum.constant'
 import { Address } from 'src/modules/address/entity/address.entity'
 import { Coupon } from 'src/modules/coupon/entity/coupon.entity'
 import { User } from 'src/modules/users/entity/user.entity'

@@ -1,13 +1,13 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql'
 import { ParseIntPipe, UseGuards } from '@nestjs/common'
-import { RoleGuard } from 'src/guard/role.guard'
-import { Roles } from 'src/decerator/roles'
-import { AuthGuard } from 'src/guard/auth.guard'
+import { RoleGuard } from 'src/common/guard/role.guard'
+import { Roles } from 'src/common/decerator/roles'
+import { AuthGuard } from 'src/common/guard/auth.guard'
 import { Coupon } from './entity/coupon.entity'
 import { CouponService } from './coupon.service'
 import { CreateCouponDto } from './dtos/createCoupon.dto'
 import { UpdateCouponDto } from './dtos/updateCoupon.dto'
-import { Role } from 'src/constant/enum.constant'
+import { Role } from 'src/common/constant/enum.constant'
 
 @Resolver(of => Coupon)
 export class CouponResolver {

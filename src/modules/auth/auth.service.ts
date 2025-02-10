@@ -13,17 +13,17 @@ import { MoreThan, Repository } from 'typeorm'
 import { InjectRepository } from '@nestjs/typeorm'
 import { HashPassword } from './utils/hashPassword'
 import { randomBytes } from 'crypto'
-import { CheckEmail } from 'src/dtos/checkEmail.dto '
+import { CheckEmail } from 'src/common/dtos/checkEmail.dto '
 import { ChangePasswordDto } from './dtos/changePassword.dto'
 import { ResetPasswordDto } from './dtos/resetPassword.dto'
-import { CACHE_MANAGER } from '@nestjs/cache-manager'
-import { Cache } from 'cache-manager'
 import { LoginDto } from './dtos/login.dto'
 import { ComparePassword } from './utils/comparePassword'
 import { AddressService } from '../address/address.service'
+import { UploadService } from 'src/common/upload/upload.service'
+import { CreateImagDto } from 'src/common/upload/dtos/createImage.dto'
 import { SendEmailService } from 'src/queue/services/sendemail.service'
 import { CreateUserDto } from './dtos/createUserData.dto'
-import { Role } from 'src/constant/enum.constant'
+import { Role } from 'src/common/constant/enum.constant'
 import {
   EmailIsWrong,
   EndOfEmail,
@@ -33,9 +33,8 @@ import {
   IsnotManager,
   OldPasswordENewPassword,
   SamePassword,
-} from 'src/constant/messages.constant'
-import { CreateImagDto } from '../upload/dtos/createImage.dto'
-import { UploadService } from '../upload/upload.service'
+} from 'src/common/constant/messages.constant'
+import { RedisService } from 'src/common/redis/redis.service'
 
 @Injectable()
 export class AuthService {
@@ -45,7 +44,7 @@ export class AuthService {
     private generateToken: GenerateToken,
     private addressService: AddressService,
     private readonly sendEmailService: SendEmailService,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly redisService: RedisService,
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
@@ -95,7 +94,7 @@ export class AuthService {
       )
       const result = { user, token }
       const userCacheKey = `user:${email}`
-      await this.cacheManager.set(userCacheKey, result, 3600)
+      await this.redisService.set(userCacheKey, result, 3600)
 
       return result
     } catch (error) {
@@ -121,7 +120,7 @@ export class AuthService {
       user.companyId,
     )
     const userCacheKey = `user:${email}`
-    await this.cacheManager.set(userCacheKey, { user, token }, 3600)
+    await this.redisService.set(userCacheKey, { user, token }, 3600)
 
     return { user, token }
   }
@@ -225,7 +224,7 @@ export class AuthService {
       user.companyId,
     )
     const userCacheKey = `user:${email}`
-    await this.cacheManager.set(userCacheKey, { user, token }, 3600)
+    await this.redisService.set(userCacheKey, { user, token }, 3600)
 
     return { user, token }
   }
@@ -248,7 +247,7 @@ export class AuthService {
       user.companyId,
     )
     const userCacheKey = `user:${email}`
-    await this.cacheManager.set(userCacheKey, { user, token }, 3600)
+    await this.redisService.set(userCacheKey, { user, token }, 3600)
 
     return { user, token }
   }
@@ -271,7 +270,7 @@ export class AuthService {
       user.companyId,
     )
     const userCacheKey = `user:${email}`
-    await this.cacheManager.set(userCacheKey, { user, token }, 3600)
+    await this.redisService.set(userCacheKey, { user, token }, 3600)
 
     return { user, token }
   }
