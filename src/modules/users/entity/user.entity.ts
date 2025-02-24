@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql'
+import { Exclude, Expose } from 'class-transformer'
 import { Role } from 'src/common/constant/enum.constant'
 import { Address } from 'src/modules/address/entity/address.entity'
 import { Cart } from 'src/modules/cart/entity/cart.entity'
@@ -12,6 +13,7 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  Index,
   JoinColumn,
   OneToMany,
   OneToOne,
@@ -20,6 +22,9 @@ import {
 
 @Entity()
 @ObjectType()
+@Index('idx_phone', ['phone'])
+@Index('idx_email', ['email'])
+@Index('idx_avatar', ['avatar'])
 export class User {
   @PrimaryGeneratedColumn()
   @Field(() => Int)
@@ -38,7 +43,7 @@ export class User {
   fullName: string
 
   @Column({ nullable: true })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   avatar: string
 
   @Column({ unique: true })
@@ -51,6 +56,7 @@ export class User {
 
   @Column()
   @Field(() => String)
+  @Exclude()
   password: string
 
   @Column({
@@ -58,6 +64,7 @@ export class User {
     enum: Role,
     default: Role.USER,
   })
+  @Exclude()
   role: Role
 
   @Column({ nullable: true })
@@ -80,6 +87,7 @@ export class User {
 
   @OneToOne(() => Address, { nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'addressId' })
+  @Field({ nullable: true })
   address: Address
 
   @OneToMany(() => Cart, cart => cart.user, {
@@ -111,6 +119,7 @@ export class User {
 
   @BeforeInsert()
   @BeforeUpdate()
+  @Expose()
   updateFullName () {
     this.fullName = `${this.firstName} ${this.lastName}`
   }

@@ -20,7 +20,7 @@ export class AddressService {
   ) {}
 
   async create (createAddressDto: CreateAddressDto) {
-    const address = this.addressRepository.create(createAddressDto)
+    const address =await this.addressRepository.create(createAddressDto)
     await this.addressRepository.save(address)
     return address
   }

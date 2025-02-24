@@ -1,3 +1,4 @@
+import { AuthInput } from './dtos/AuthRes.dto'
 import {
   BadRequestException,
   Inject,
@@ -52,7 +53,7 @@ export class AuthService {
     createUserDto: CreateUserDto,
     createAddressDto: CreateAddressDto,
     avatar?: CreateImagDto,
-  ) {
+  ): Promise<AuthInput> {
     const { firstName, lastName, phone, email } = createUserDto
     if (!email.endsWith('@gmail.com')) {
       throw new BadRequestException(EndOfEmail)
@@ -61,18 +62,20 @@ export class AuthService {
     await query.startTransaction()
 
     try {
-      const address = await this.addressService.create(createAddressDto)
       const user = await this.userRepository.create({
         firstName,
         lastName,
         email,
         phone,
         password: await HashPassword(createUserDto.password),
-        addressId: address.id,
       })
+      const address = await this.addressService.create(createAddressDto)
+      if (address) {
+        user.addressId = address.id
+      }
       await this.userRepository.save(user)
 
-      if (avatar.name) {
+      if (avatar) {
         const filename = await this.uploadService.uploadImage(avatar)
         if (typeof filename === 'string') {
           user.avatar = filename
@@ -92,9 +95,10 @@ export class AuthService {
         address.id,
         user.companyId,
       )
+      user.address=address
       const result = { user, token }
-      const userCacheKey = `user:${email}`
-      await this.redisService.set(userCacheKey, result, 3600)
+      // const userCacheKey = `user:${user.email}`
+      // await this.redisService.set(userCacheKey, result)
 
       return result
     } catch (error) {

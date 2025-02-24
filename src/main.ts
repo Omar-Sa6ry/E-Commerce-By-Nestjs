@@ -1,5 +1,5 @@
-import { NestFactory, Reflector } from '@nestjs/core'
 import { AppModule } from './app.module'
+import { NestFactory, Reflector } from '@nestjs/core'
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
 import { GeneralResponseInterceptor } from './common/interceptor/generalResponse.interceptor'
 import * as graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js'
@@ -13,8 +13,7 @@ async function bootstrap () {
   app.use(graphqlUploadExpress({ maxFileSize: 1000000, maxFiles: 5 }))
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
 
-  await app.listen(process.env.PORT)
-  console.log(`🚀 Server ready at http://localhost:3000/graphql`)
+  await app.listen(4000)
 }
 
 bootstrap()

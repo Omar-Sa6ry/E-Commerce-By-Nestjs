@@ -50,6 +50,7 @@
     "cloudinary": "^2.5.1",
     "dataloader": "^2.2.3",
     "e-commerce": "file:",
+    "firebase-admin": "^13.1.0",
     "graphql": "^16.10.0",
     "graphql-upload": "^14.0.0",
     "graphql-upload-minimal": "^1.6.1",

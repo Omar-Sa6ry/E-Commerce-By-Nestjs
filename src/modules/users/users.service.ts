@@ -21,9 +21,7 @@ export class UserService {
     private uploadService: UploadService,
     private readonly redisService: RedisService,
     @InjectRepository(User) private userRepository: Repository<User>,
-  ) {
-    console.log(this.userRepository)
-  }
+  ) {}
 
   async findById (id: number) {
     const user = await this.userRepository.findOne({ where: { id } })

@@ -21,7 +21,7 @@ import { DataBaseModule } from './common/database/database'
     GraphqlModule,
     DataBaseModule,
     ThrottlerModule,
-    
+
     UserModule,
     AuthModule,
     ProductModule,
@@ -34,5 +34,5 @@ import { DataBaseModule } from './common/database/database'
   ],
   providers: [AppResolver, AppService],
 })
-export class AppModule {}
 
+export class AppModule {}

@@ -44,7 +44,7 @@ export class Address {
   @Field(() => Int, { nullable: true })
   userId: number
 
-  @OneToOne(() => User, { nullable: true, onDelete: 'CASCADE' })
+  @OneToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User
 

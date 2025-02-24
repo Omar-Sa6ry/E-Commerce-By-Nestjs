@@ -90,17 +90,26 @@ type User {
   firstName: String!
   lastName: String!
   fullName: String!
-  avatar: String!
+  avatar: String
   phone: String!
   email: String!
   password: String!
   addressId: Int
   companyId: Int
+  address: Address
+}
+
+type AuthOutPut {
+  user: User!
+  token: String!
 }
 
 type AuthResponse {
-  user: User!
-  token: String!
+  message: String
+  success: Boolean
+  timeStamp: String
+  statusCode: Float
+  data: AuthOutPut
 }
 
 type ColorResponse {
@@ -193,12 +202,12 @@ input PaginationDto {
 type Mutation {
   updateUser(updateUserDto: UpdateUserDto!): User!
   UpdateUserRole(checkEmail: CheckEmail!, companyId: Float!): String!
-  register(createUserDto: CreateUserDto!, createAddressDto: CreateAddressDto!, avatar: CreateImagDto!): AuthResponse!
+  register(createUserDto: CreateUserDto!, createAddressDto: CreateAddressDto!, avatar: CreateImagDto): AuthResponse!
   login(loginDto: LoginDto!): AuthResponse!
   forgotPassword(checkEmail: CheckEmail!): String!
   resetPassword(resetPasswordDto: ResetPasswordDto!): String!
   changePassword(changePasswordDto: ChangePasswordDto!): String!
-  adminLogin(loginDto: LoginDto!): AuthResponse!
+  adiminLogin(loginDto: LoginDto!): AuthResponse!
   managerLogin(loginDto: LoginDto!): AuthResponse!
   companyLogin(loginDto: LoginDto!): AuthResponse!
   logout: Boolean!
